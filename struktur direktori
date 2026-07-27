@@ -1,0 +1,7 @@
+advanced-scraper/
+├── .gitignore
+├── pyproject.toml
+├── README.md
+└── src/
+    ├── __init__.py
+    └── core.py
