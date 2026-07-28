@@ -213,11 +213,19 @@ python main.py --menu
 ```
 
 **Contoh penggunaan mode interaktif:**
-1. Pilih **1** untuk scraping satu URL
-2. Masukkan URL target (contoh: `https://example.com`)
-3. Pilih format output (JSON/CSV/SQLite)
-4. Konfigurasi parameter (retry, timeout, delay, workers)
-5. Hasil akan disimpan di folder `output/`
+
+1. Jalankan `python main.py` atau `python main.py --menu`
+2. Pilih **1** untuk scraping satu URL
+3. Masukkan URL target (contoh: `https://example.com`)
+4. Pilih format output (json/csv/db)
+5. Konfigurasi parameter (retry, timeout, delay, workers) - tekan Enter untuk default
+6. Hasil akan disimpan di folder `output/` dengan nama file otomatis
+
+**Fitur menu lainnya:**
+- **Menu 2**: Scraping multiple URLs dari file teks
+- **Menu 3**: Lihat daftar file hasil scraping yang tersimpan
+- **Menu 4**: Hapus semua file output untuk membersihkan storage
+- **Menu 5**: Info versi dan bantuan singkat
 
 ### 💻 Mode CLI Langsung
 
@@ -241,21 +249,25 @@ python main.py --file urls.txt -f json -w 5
 
 # Dengan proxy
 python main.py -u https://example.com -p http://user:pass@proxy:8080
+
+# Tampilkan bantuan lengkap
+python main.py --help
 ```
 
 **Parameter CLI:**
 | Parameter | Singkat | Deskripsi | Default |
 |-----------|---------|-----------|---------|
-| `--url` | `-u` | URL target scraping | Required |
+| `--url` | `-u` | URL target scraping | Required (jika tidak ada --file) |
 | `--format` | `-f` | Format output (json/csv/db) | json |
-| `--output` | `-o` | Folder output | output |
+| `--output` | `-o` | Nama file output (tanpa ekstensi) | scrape_result_[timestamp] |
 | `--workers` | `-w` | Jumlah concurrent workers | 5 |
 | `--retries` | `-r` | Maksimal retry per URL | 3 |
 | `--timeout` | `-t` | Timeout dalam detik | 30 |
 | `--delay` | `-d` | Delay antar request (detik) | 0.5 |
 | `--proxy` | `-p` | Proxy URL | None |
-| `--file` | | File berisi list URLs | None |
-| `--menu` | `-m` | Mode interaktif | False |
+| `--file` | | File teks berisi list URLs (satu per baris) | None |
+| `--menu` | `-m` | Paksa mode interaktif | False |
+| `--help` | `-h` | Tampilkan bantuan | - |
 
 ### 📁 Format File URLs
 
