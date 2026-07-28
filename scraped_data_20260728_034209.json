@@ -1,0 +1,22 @@
+[
+  {
+    "url": "https://example.com/",
+    "title": "No Title",
+    "data": {
+      "headings": {
+        "h1": [],
+        "h2": [],
+        "h3": []
+      },
+      "links": [],
+      "images": [],
+      "paragraphs": []
+    },
+    "metadata": {
+      "response_time": 1.500084400177002,
+      "status_code": 200
+    },
+    "scraped_at": "2026-07-28T03:42:09.099064",
+    "status": "success"
+  }
+]

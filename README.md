@@ -185,6 +185,95 @@ if __name__ == "__main__":
 
 ---
 
+## 🚀 Cara Menggunakan
+
+### 📱 Mode Interaktif dengan Menu (RECOMMENDED)
+
+Jalankan scraper dengan menu interaktif yang mudah digunakan:
+
+```bash
+# Jalankan tanpa parameter untuk masuk ke menu interaktif
+python main.py
+
+# Atau gunakan flag --menu
+python main.py --menu
+```
+
+**Menu yang tersedia:**
+```
+🚀 ADVANCED PYTHON SCRAPER - Menu Interaktif
+============================================================
+1. 🕷️  Scraping URL Tunggal
+2. 📋  Scraping Multiple URLs dari File
+3. 📊  Lihat Riwayat Scraping (Output Files)
+4. 🗑️  Hapus Semua Output Files
+5. ℹ️   Info & Bantuan
+0. 🚪  Keluar
+============================================================
+```
+
+**Contoh penggunaan mode interaktif:**
+1. Pilih **1** untuk scraping satu URL
+2. Masukkan URL target (contoh: `https://example.com`)
+3. Pilih format output (JSON/CSV/SQLite)
+4. Konfigurasi parameter (retry, timeout, delay, workers)
+5. Hasil akan disimpan di folder `output/`
+
+### 💻 Mode CLI Langsung
+
+Untuk otomatisasi atau scripting, gunakan mode command-line:
+
+```bash
+# Scraping URL tunggal dengan output JSON
+python main.py -u https://example.com -f json
+
+# Scraping dengan custom parameters
+python main.py -u https://example.com \
+  -f csv \
+  -o hasil_scraping \
+  -w 10 \
+  -r 5 \
+  -t 60 \
+  -d 1.0
+
+# Scraping multiple URLs dari file
+python main.py --file urls.txt -f json -w 5
+
+# Dengan proxy
+python main.py -u https://example.com -p http://user:pass@proxy:8080
+```
+
+**Parameter CLI:**
+| Parameter | Singkat | Deskripsi | Default |
+|-----------|---------|-----------|---------|
+| `--url` | `-u` | URL target scraping | Required |
+| `--format` | `-f` | Format output (json/csv/db) | json |
+| `--output` | `-o` | Folder output | output |
+| `--workers` | `-w` | Jumlah concurrent workers | 5 |
+| `--retries` | `-r` | Maksimal retry per URL | 3 |
+| `--timeout` | `-t` | Timeout dalam detik | 30 |
+| `--delay` | `-d` | Delay antar request (detik) | 0.5 |
+| `--proxy` | `-p` | Proxy URL | None |
+| `--file` | | File berisi list URLs | None |
+| `--menu` | `-m` | Mode interaktif | False |
+
+### 📁 Format File URLs
+
+Untuk scraping multiple URLs, buat file teks dengan satu URL per baris:
+
+```txt
+https://example.com/page1
+https://example.com/page2
+https://example.com/page3
+```
+
+Kemudian jalankan:
+```bash
+python main.py --file urls.txt -f json
+```
+
+---
+
 ## 🧪 Verifikasi Instalasi
 
 Buat file `test_install.py` untuk memastikan semua komponen berjalan:

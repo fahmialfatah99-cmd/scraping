@@ -1,11 +1,18 @@
 ```
-# Compiled Python files
-*.pyc
+# Python
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
 
-# Output/data files
-output/
-scraped_data_*.json
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+*.env.*
 
 # Dependencies
 .venv/
