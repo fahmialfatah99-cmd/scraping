@@ -191,3 +191,5 @@
 2026-07-28 04:45:15 | SUCCESS  | src.core:save_results:451 - Results saved to output/scraped_data.json
 2026-07-28 04:45:15 | SUCCESS  | __main__:run_scraper:42 - Data saved to output/scraped_data.json
 2026-07-28 04:45:15 | INFO     | __main__:run_scraper:52 - Scraping completed! 1 items collected.
+2026-07-28 05:01:38 | WARNING  | __main__:main:353 - 
+Program interrupted by user
