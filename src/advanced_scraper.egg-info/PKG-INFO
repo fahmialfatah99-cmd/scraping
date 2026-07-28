@@ -1,0 +1,10 @@
+Metadata-Version: 2.4
+Name: advanced-scraper
+Version: 0.1.0
+Summary: Advanced, resilient, and stealth Python web scraper.
+Requires-Python: >=3.10
+Requires-Dist: httpx[http2]>=0.27.0
+Requires-Dist: playwright>=1.42.0
+Requires-Dist: beautifulsoup4>=4.12.0
+Requires-Dist: pydantic>=2.6.0
+Requires-Dist: loguru>=0.7.0

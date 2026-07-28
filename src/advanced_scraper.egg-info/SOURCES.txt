@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+src/__init__.py
+src/core.py
+src/exporter.py
+src/url_manager.py
+src/advanced_scraper.egg-info/PKG-INFO
+src/advanced_scraper.egg-info/SOURCES.txt
+src/advanced_scraper.egg-info/dependency_links.txt
+src/advanced_scraper.egg-info/requires.txt
+src/advanced_scraper.egg-info/top_level.txt

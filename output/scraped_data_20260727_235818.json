@@ -1,0 +1,14 @@
+[
+  {
+    "url": "https://example.com/page1",
+    "title": "Test Page 1",
+    "data": {
+      "key": "value"
+    },
+    "metadata": {
+      "author": "Test"
+    },
+    "scraped_at": "2026-07-27T23:58:18.094683",
+    "status": "success"
+  }
+]
