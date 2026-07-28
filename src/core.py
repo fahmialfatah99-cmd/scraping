@@ -247,7 +247,7 @@ class BaseScraper:
             headers=headers,
             timeout=self.timeout,
             follow_redirects=True,
-            http2=True,
+            http2=False,  # Disable HTTP/2 for better compatibility
         )
         logger.debug("HTTP client initialized with stealth headers")
         
@@ -440,7 +440,8 @@ class BaseScraper:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"scraped_data_{timestamp}.json"
         
-        filepath = Path(self.config.output_dir) / filename
+        filepath = Path(filename)
+        filepath.parent.mkdir(parents=True, exist_ok=True)
         
         data = [item.model_dump(mode='json') for item in items]
         
