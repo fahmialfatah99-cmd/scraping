@@ -171,3 +171,23 @@
 2026-07-28 03:43:24 | INFO     | src.core:__init__:234 - Max retries: 1, Timeout: 10s
 2026-07-28 03:43:24 | DEBUG    | src.core:_get_http_client:252 - HTTP client initialized with stealth headers
 2026-07-28 03:43:26 | SUCCESS  | src.core:fetch_page_http:283 - Successfully fetched https://quotes.toscrape.com/ (attempt 1)
+2026-07-28 04:45:14 | INFO     | src.core:__init__:232 - Initialized advanced scraper for https://example.com
+2026-07-28 04:45:14 | INFO     | src.core:__init__:233 - Session fingerprint: c289625171794de9
+2026-07-28 04:45:14 | INFO     | src.core:__init__:234 - Max retries: 3, Timeout: 30s
+2026-07-28 04:45:14 | INFO     | src.core:run:402 - ============================================================
+2026-07-28 04:45:14 | INFO     | src.core:run:403 - Starting advanced scraping process...
+2026-07-28 04:45:14 | INFO     | src.core:run:404 - ============================================================
+2026-07-28 04:45:14 | INFO     | src.core:scrape_url:378 - Scraping: https://example.com
+2026-07-28 04:45:14 | DEBUG    | src.core:_get_http_client:252 - HTTP client initialized with stealth headers
+2026-07-28 04:45:15 | SUCCESS  | src.core:fetch_page_http:283 - Successfully fetched https://example.com (attempt 1)
+2026-07-28 04:45:15 | INFO     | src.core:parse_page:373 - Parsed https://example.com: No Title
+2026-07-28 04:45:15 | INFO     | src.core:run:424 - ============================================================
+2026-07-28 04:45:15 | INFO     | src.core:run:425 - Scraping completed!
+2026-07-28 04:45:15 | INFO     | src.core:run:426 - Successful: 1/1
+2026-07-28 04:45:15 | INFO     | src.core:run:427 - Failed: 0
+2026-07-28 04:45:15 | INFO     | src.core:run:428 - Exceptions: 0
+2026-07-28 04:45:15 | INFO     | src.core:run:429 - ============================================================
+2026-07-28 04:45:15 | SUCCESS  | src.core:save_results:451 - Results saved to scraped_data_20260728_044515.json
+2026-07-28 04:45:15 | SUCCESS  | src.core:save_results:451 - Results saved to output/scraped_data.json
+2026-07-28 04:45:15 | SUCCESS  | __main__:run_scraper:42 - Data saved to output/scraped_data.json
+2026-07-28 04:45:15 | INFO     | __main__:run_scraper:52 - Scraping completed! 1 items collected.
