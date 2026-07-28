@@ -1,0 +1,18 @@
+2026-07-27 23:57:54 | INFO     | src.core:__init__:233 - Initialized advanced scraper for https://example.com
+2026-07-27 23:57:54 | INFO     | src.core:__init__:234 - Session fingerprint: a8cd2fb3d2bf3fe9
+2026-07-27 23:57:54 | INFO     | src.core:__init__:235 - Max retries: 2, Timeout: 15s
+2026-07-27 23:57:54 | INFO     | src.core:run:511 - ============================================================
+2026-07-27 23:57:54 | INFO     | src.core:run:512 - Starting advanced scraping process...
+2026-07-27 23:57:54 | INFO     | src.core:run:513 - ============================================================
+2026-07-27 23:57:54 | INFO     | src.core:scrape_url:484 - Scraping: https://example.com
+2026-07-27 23:57:54 | DEBUG    | src.core:_get_http_client:254 - HTTP client initialized with stealth headers
+2026-07-27 23:57:56 | SUCCESS  | src.core:fetch_page_http:330 - Successfully fetched https://example.com (attempt 1)
+2026-07-27 23:57:56 | INFO     | src.core:parse_page:479 - Parsed https://example.com: No Title
+2026-07-27 23:57:56 | INFO     | src.core:run:533 - ============================================================
+2026-07-27 23:57:56 | INFO     | src.core:run:534 - Scraping completed!
+2026-07-27 23:57:56 | INFO     | src.core:run:535 - Successful: 1/1
+2026-07-27 23:57:56 | INFO     | src.core:run:536 - Failed: 0
+2026-07-27 23:57:56 | INFO     | src.core:run:537 - Exceptions: 0
+2026-07-27 23:57:56 | INFO     | src.core:run:538 - ============================================================
+2026-07-27 23:57:56 | SUCCESS  | src.core:save_results:559 - Results saved to output/scraped_data_20260727_235756.json
+2026-07-27 23:57:56 | DEBUG    | src.core:close:565 - HTTP client closed
