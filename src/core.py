@@ -1,7 +1,8 @@
 """
 Core module for Advanced Scraper.
 Production-grade architecture for resilient, stealth, and intelligent web scraping.
-Features: Async execution, anti-detection, retry logic, rate limiting, proxy rotation, and structured data extraction.
+Features: Async execution with httpx, anti-detection, retry logic, rate limiting, proxy rotation, 
+and structured data extraction with BeautifulSoup.
 """
 import asyncio
 import random
@@ -207,7 +208,7 @@ class BaseScraper:
     """
     Advanced base scraper class with production-grade features:
     - Async HTTP fetching with httpx
-    - Browser automation with Playwright
+    - HTML parsing with BeautifulSoup
     - Anti-bot & stealth mechanisms
     - Intelligent retry with exponential backoff
     - Rate limiting and proxy rotation
@@ -227,8 +228,6 @@ class BaseScraper:
         self.scraped_items: List[ScrapedItem] = []
         self.failed_urls: List[str] = []
         self._http_client = None
-        self._browser = None
-        self._page = None
         
         logger.info(f"Initialized advanced scraper for {self.base_url}")
         logger.info(f"Session fingerprint: {self.session_fingerprint}")
@@ -238,67 +237,21 @@ class BaseScraper:
         if config.save_to_file:
             Path(config.output_dir).mkdir(parents=True, exist_ok=True)
     
-    async def _get_http_client(self):
+    async def _get_http_client(self, proxy: Optional[str] = None) -> "httpx.AsyncClient":
         """Initialize or return existing HTTP client with stealth configuration."""
-        if self._http_client is None:
-            import httpx
-            
-            headers = StealthUtils.generate_request_headers()
-            
-            self._http_client = httpx.AsyncClient(
-                headers=headers,
-                timeout=self.timeout,
-                follow_redirects=True,
-                http2=True,
-            )
-            logger.debug("HTTP client initialized with stealth headers")
+        import httpx
         
-        return self._http_client
-    
-    async def _get_browser(self):
-        """Initialize Playwright browser with stealth configuration."""
-        if self._browser is None:
-            from playwright.async_api import async_playwright
-            
-            playwright = await async_playwright().start()
-            
-            # Stealth browser configuration
-            browser_args = [
-                "--disable-blink-features=AutomationControlled",
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-accelerated-2d-canvas",
-                "--no-first-run",
-                "--no-zygote",
-                "--disable-gpu",
-            ]
-            
-            self._browser = await playwright.chromium.launch(
-                headless=True,
-                args=browser_args,
-            )
-            
-            context_options = {
-                "user_agent": StealthUtils.get_random_user_agent(),
-                "viewport": {"width": 1920, "height": 1080},
-                "device_scale_factor": 1,
-                "has_touch": False,
-                "is_mobile": False,
-            }
-            
-            context = await self._browser.new_context(**context_options)
-            self._page = await context.new_page()
-            
-            # Inject stealth scripts
-            await self._page.add_init_script("""
-                Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
-                Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
-                Object.defineProperty(navigator, 'languages', {get: () => ['en-US', 'en']});
-            """)
-            
-            logger.debug("Playwright browser initialized with stealth configuration")
+        headers = StealthUtils.generate_request_headers()
         
-        return self._page
+        client = httpx.AsyncClient(
+            headers=headers,
+            timeout=self.timeout,
+            follow_redirects=True,
+            http2=True,
+        )
+        logger.debug("HTTP client initialized with stealth headers")
+        
+        return client
     
     async def fetch_page_http(self, url: str) -> RequestResult:
         """Fetch page using httpx with retry logic and stealth."""
@@ -378,65 +331,6 @@ class BaseScraper:
             response_time=time.time() - start_time,
         )
     
-    async def fetch_page_browser(self, url: str) -> RequestResult:
-        """Fetch page using Playwright with full browser automation."""
-        start_time = time.time()
-        
-        for attempt in range(self.max_retries):
-            try:
-                await self.rate_limiter.acquire()
-                await StealthUtils.simulate_human_behavior()
-                
-                page = await self._get_browser()
-                
-                # Navigate with stealth
-                response = await page.goto(url, wait_until="networkidle", timeout=self.timeout * 1000)
-                
-                if response is None:
-                    raise Exception("Navigation failed - no response")
-                
-                # Wait for dynamic content
-                await page.wait_for_timeout(random.uniform(1000, 3000))
-                
-                content = await page.content()
-                response_time = time.time() - start_time
-                
-                logger.success(f"Successfully fetched {url} with browser (attempt {attempt + 1})")
-                
-                return RequestResult(
-                    success=True,
-                    status_code=response.status,
-                    content=content,
-                    headers={},
-                    response_time=response_time,
-                )
-            
-            except Exception as e:
-                logger.error(f"Browser attempt {attempt + 1} failed for {url}: {str(e)}")
-                if attempt < self.max_retries - 1:
-                    backoff = self.retry_delay * (2 ** attempt) + random.uniform(0, 1)
-                    await asyncio.sleep(backoff)
-                else:
-                    logger.error(f"All browser attempts failed for {url}")
-                    self.failed_urls.append(url)
-                    return RequestResult(
-                        success=False,
-                        status_code=0,
-                        content="",
-                        headers={},
-                        error_message=str(e),
-                        response_time=time.time() - start_time,
-                    )
-        
-        return RequestResult(
-            success=False,
-            status_code=0,
-            content="",
-            headers={},
-            error_message="Max retries exceeded",
-            response_time=time.time() - start_time,
-        )
-    
     def parse_page(self, html: str, url: str) -> ScrapedItem:
         """Parse HTML into structured Pydantic models using BeautifulSoup."""
         from bs4 import BeautifulSoup
@@ -479,14 +373,11 @@ class BaseScraper:
         logger.info(f"Parsed {url}: {title}")
         return item
     
-    async def scrape_url(self, url: str, use_browser: bool = False) -> Optional[ScrapedItem]:
-        """Scrape a single URL with automatic method selection."""
+    async def scrape_url(self, url: str) -> Optional[ScrapedItem]:
+        """Scrape a single URL using httpx and BeautifulSoup."""
         logger.info(f"Scraping: {url}")
         
-        if use_browser:
-            result = await self.fetch_page_browser(url)
-        else:
-            result = await self.fetch_page_http(url)
+        result = await self.fetch_page_http(url)
         
         if result.success:
             item = self.parse_page(result.content, url)
@@ -560,13 +451,7 @@ class BaseScraper:
     
     async def close(self):
         """Cleanup resources."""
-        if self._http_client:
-            await self._http_client.aclose()
-            logger.debug("HTTP client closed")
-        
-        if self._browser:
-            await self._browser.close()
-            logger.debug("Browser closed")
+        logger.debug("Scraper closed")
     
     async def __aenter__(self):
         """Async context manager entry."""
