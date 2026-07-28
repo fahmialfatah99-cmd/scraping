@@ -1,0 +1,26 @@
+[
+  {
+    "url": "https://httpbin.org/html",
+    "title": "No Title",
+    "data": {
+      "headings": {
+        "h1": [
+          "Herman Melville - Moby-Dick"
+        ],
+        "h2": [],
+        "h3": []
+      },
+      "links": [],
+      "images": [],
+      "paragraphs": [
+        "Availing himself of the mild, summer-cool weather that now reigned in these latitudes, and in preparation for the peculiarly active pursuits shortly to be anticipated, Perth, the begrimed, blistered o"
+      ]
+    },
+    "metadata": {
+      "response_time": 2.3629415035247803,
+      "status_code": 200
+    },
+    "scraped_at": "2026-07-28T03:13:58.200737",
+    "status": "success"
+  }
+]

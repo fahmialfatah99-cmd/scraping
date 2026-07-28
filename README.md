@@ -1,26 +1,25 @@
 # 🚀 Advanced Python Scraper
 
-Sistem web scraping production-grade yang canggih, cepat, dan tahan banting. Dibangun dengan arsitektur async modern untuk menangani skala besar dengan fitur anti-bot terintegrasi.
+Sistem web scraping production-grade yang canggih, cepat, dan tahan banting. Dibangun dengan arsitektur async modern untuk menangani skala besar dengan fitur anti-bot terintegrasi. Menggunakan `httpx` dan `BeautifulSoup` untuk scraping yang ringan tanpa dependensi browser.
 
 ## ✨ Fitur Unggulan
 
 ### 🛡️ Anti-Deteksi & Keamanan
 - **User Agent Rotation**: Rotasi otomatis menggunakan database user-agent terbaru
 - **Header Spoofing**: Simulasi header browser asli secara lengkap
-- **Navigator Injection**: Menyembunyikan tanda-tanda automation (Playwright)
 - **Proxy Rotation**: Failover otomatis jika proxy gagal
 - **Rate Limiting**: Token bucket algorithm untuk menghormati server target
-- **Fingerprint Randomization**: Mengacak canvas, WebGL, dan font
+- **Fingerprint Randomization**: Session fingerprint unik untuk setiap scraping session
 
 ### ⚡ Performa Tinggi
-- **Async HTTP**: Menggunakan `httpx` dengan dukungan HTTP/2
-- **Browser Automation**: Playwright untuk situs JavaScript-heavy (SPA)
+- **Async HTTP**: Menggunakan `httpx` dengan dukungan HTTP/2 untuk kecepatan maksimal
+- **Lightweight**: Tidak memerlukan instalasi browser atau dependencies berat
 - **Concurrent Scraping**: Eksekusi paralel dengan kontrol semaphore
 - **Intelligent Retry**: Exponential backoff dengan jitter
 - **Priority Queue**: URL scheduling berbasis prioritas
 
 ### 📊 Manajemen Data
-- **Multi-format Export**: JSON, CSV, SQLite, MongoDB
+- **Multi-format Export**: JSON, CSV, SQLite
 - **Compression**: Opsional gzip untuk menghemat storage
 - **Validation**: Pydantic models untuk memastikan integritas data
 - **Batch Processing**: Efisien untuk dataset besar
@@ -38,8 +37,8 @@ Sistem web scraping production-grade yang canggih, cepat, dan tahan banting. Dib
 | Komponen | Versi Minimum | Rekomendasi |
 |----------|---------------|-------------|
 | Python | 3.9 | 3.10+ |
-| RAM | 2 GB | 4 GB+ (jika pakai Browser) |
-| Storage | 500 MB | 1 GB+ |
+| RAM | 1 GB | 2 GB+ |
+| Storage | 200 MB | 500 MB+ |
 | OS | Linux/macOS/Windows | Linux (Ubuntu 20.04+) |
 
 ---
@@ -55,11 +54,6 @@ sudo apt update && sudo apt upgrade -y
 # 2. Install dependencies sistem
 sudo apt install -y python3 python3-pip python3-venv git curl wget
 
-# Dependencies browser (wajib untuk Playwright)
-sudo apt install -y libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 \
-libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 \
-libxfixes3 libxrandr2 libgbm1 libasound2 libpango-1.0-0 libcairo2
-
 # 3. Setup project
 mkdir -p ~/advanced-scraper && cd ~/advanced-scraper
 python3 -m venv venv
@@ -67,11 +61,7 @@ source venv/bin/activate
 
 # 4. Install library Python
 pip install --upgrade pip
-pip install httpx playwright beautifulsoup4 pydantic loguru aiosqlite motor fake-useragent
-
-# 5. Install browser binaries
-playwright install
-playwright install-deps
+pip install httpx beautifulsoup4 pydantic loguru aiosqlite fake-useragent
 ```
 
 ### 🍎 macOS (Intel & Apple Silicon)
@@ -89,10 +79,7 @@ source venv/bin/activate
 
 # 3. Install library
 pip install --upgrade pip
-pip install httpx playwright beautifulsoup4 pydantic loguru aiosqlite motor fake-useragent
-
-# 4. Install browser
-playwright install
+pip install httpx beautifulsoup4 pydantic loguru aiosqlite fake-useragent
 ```
 
 ### 🪟 Windows (10/11)
@@ -116,10 +103,7 @@ playwright install
    
    # Install libraries
    python -m pip install --upgrade pip
-   pip install httpx playwright beautifulsoup4 pydantic loguru aiosqlite motor fake-useragent
-   
-   # Install browser
-   playwright install
+   pip install httpx beautifulsoup4 pydantic loguru aiosqlite fake-useragent
    ```
 
 ---
@@ -163,8 +147,7 @@ python main.py --url "https://target-site.com" \
     --max-depth 3 \
     --output data/results
 
-# Gunakan mode browser (untuk situs JS berat)
-python main.py --url "https://react-app.com" --use-browser --headless
+# Gunakan mode browser (untuk situs JS berat) - *Tidak tersedia, gunakan httpx+BeautifulSoup*
 ```
 
 ### Contoh Kode (Python API)
@@ -215,7 +198,6 @@ async def check_systems():
     
     checks = [
         ("httpx", "import httpx"),
-        ("playwright", "from playwright.async_api import async_playwright"),
         ("pydantic", "from pydantic import BaseModel"),
         ("beautifulsoup4", "from bs4 import BeautifulSoup"),
         ("aiosqlite", "import aiosqlite"),
@@ -227,16 +209,6 @@ async def check_systems():
             print(f"✅ {name} OK")
         except Exception as e:
             print(f"❌ {name} GAGAL: {e}")
-
-    # Tes Browser
-    try:
-        from playwright.async_api import async_playwright
-        async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=True)
-            await browser.close()
-        print("✅ Browser Engine OK")
-    except Exception as e:
-        print(f"❌ Browser GAGAL: {e}")
 
 if __name__ == "__main__":
     asyncio.run(check_systems())
@@ -302,11 +274,11 @@ Kontribusi sangat diterima! Silakan buat Pull Request atau buka Issue untuk lapo
 
 Jika mengalami masalah, pastikan:
 1. Python versi sesuai (3.9+)
-2. Dependencies browser sudah terinstall (`playwright install-deps`)
+2. Semua dependencies terinstall (`pip install -r requirements.txt`)
 3. Firewall/Antivirus tidak memblokir koneksi
 
 Untuk pertanyaan lebih lanjut, silakan buka tab **Issues**.
 
 ---
 
-*Dibuat dengan ❤️ menggunakan Python Async & Playwright*
+*Dibuat dengan ❤️ menggunakan Python Async, httpx & BeautifulSoup*
